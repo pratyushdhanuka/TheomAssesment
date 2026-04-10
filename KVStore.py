@@ -1,25 +1,45 @@
 import json
 import os
 import threading
+import time
 from typing import Any, Optional, List, Dict
-from ISnapshotStore import ISnapshotStore
+from snapshot import ISnapshotStore, ISnapshotPolicy
 
 
 class KVStore:
-    def __init__(self, node_id: str, peer_nodes: List[str], snapshot_store: ISnapshotStore):
+    def __init__(self, node_id: str, peer_nodes: List[str], snapshot_store: ISnapshotStore, snapshot_policy: Optional[ISnapshotPolicy] = None):
         self.node_id = node_id
         self.peer_nodes = peer_nodes
         self.all_nodes = sorted([node_id] + peer_nodes)
         self.snapshot_store = snapshot_store
+        self.snapshot_policy = snapshot_policy
         self.store = {}
         self.lock = threading.Lock()
         self.log_file = f"{self.node_id}_wal.log"
         self._load_from_disk()
+        # start background snapshot worker if a policy was provided
+        if self.snapshot_policy is not None:
+            self._snapshot_thread = threading.Thread(target=self._snapshot_worker, daemon=True)
+            self._snapshot_thread.start()
 
     def _create_snapshot(self):
+        # take a consistent copy under lock
         with self.lock:
             snapshot_data = dict(self.store)
-        self.snapshot_store.save_snapshot(self.node_id, snapshot_data)
+
+        try:
+            self.snapshot_store.save_snapshot(self.node_id, snapshot_data)
+            # truncate WAL after successful snapshot to avoid replaying already-snapshotted records
+            try:
+                with self.lock:
+                    # clear the WAL file
+                    open(self.log_file, "w").close()
+            except Exception:
+                # best-effort: ignore failures to truncate
+                pass
+        except Exception:
+            # best-effort: ignore snapshot save failures
+            pass
         
     def send_to_node(self, target_node: str, message: dict) -> Optional[dict]:
         pass  # provided
@@ -108,4 +128,31 @@ class KVStore:
                 "value": value
             })
 
+        # let policy decide if we should snapshot immediately
+        try:
+            if self.snapshot_policy is not None and self.snapshot_policy.on_write():
+                self._create_snapshot()
+                try:
+                    self.snapshot_policy.mark_snapshot_completed()
+                except Exception:
+                    pass
+        except Exception:
+            # ignore policy errors
+            pass
+
         return True
+
+    def _snapshot_worker(self):
+        # periodic background worker that asks the policy whether to snapshot
+        while True:
+            try:
+                if self.snapshot_policy is not None and self.snapshot_policy.should_snapshot_now():
+                    self._create_snapshot()
+                    try:
+                        self.snapshot_policy.mark_snapshot_completed()
+                    except Exception:
+                        pass
+            except Exception:
+                # ignore policy errors and continue
+                pass
+            time.sleep(1.0)

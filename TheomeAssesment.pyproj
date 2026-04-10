@@ -22,6 +22,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="snapshot\count_snapshot_policy.py" />
+    <Compile Include="snapshot\hybrid_snapshot_policy.py" />
+    <Compile Include="snapshot\interval_snapshot_policy.py" />
+    <Compile Include="snapshot\ISnapshotPolicy.py" />
     <Compile Include="Snapshot\ISnapshotStore.py" />
     <Compile Include="KVStore.py" />
     <Compile Include="main.py" />
@@ -35,9 +39,12 @@
     <Content Include="Design\DesignBrainstorm.md" />
     <Content Include="Design\Tradeoffs.md" />
     <Content Include="Notes.md" />
+    <Content Include="Design\SnapshotPolicy.md" />
+    <Content Include="Scenaios\SingleOwner.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Design\" />
+    <Folder Include="Scenaios\" />
     <Folder Include="Snapshot\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
