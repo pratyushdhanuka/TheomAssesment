@@ -41,6 +41,8 @@
     <Content Include="Design\Tradeoffs.md" />
     <Content Include="Notes.md" />
     <Content Include="Design\SnapshotPolicy.md" />
+    <Content Include="Scenaios\HealthDetection.md" />
+    <Content Include="Scenaios\Hotspot.md" />
     <Content Include="Scenaios\SingleOwner.md" />
   </ItemGroup>
   <ItemGroup>
