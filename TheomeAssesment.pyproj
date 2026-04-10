@@ -22,16 +22,19 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ISnapshotStore.py" />
     <Compile Include="KVStore.py" />
     <Compile Include="main.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Design\BackupSnaphopt.md" />
     <Content Include="Design\DesignBrainstorm.md" />
     <Content Include="Design\Tradeoffs.md" />
     <Content Include="Notes.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Design\" />
+    <Folder Include="Snapshot\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

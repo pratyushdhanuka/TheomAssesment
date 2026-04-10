@@ -5,15 +5,21 @@ from typing import Any, Optional, List
 
 
 class KVStore:
-    def __init__(self, node_id: str, peer_nodes: List[str]):
+    def __init__(self, node_id: str, peer_nodes: List[str], snapshot_store: ISnapshotStore):
         self.node_id = node_id
+        self.peer_nodes = peer_nodes
         self.all_nodes = sorted([node_id] + peer_nodes)
-        self.store = {}  # key -> value
+        self.snapshot_store = snapshot_store
+        self.store = {}
         self.lock = threading.Lock()
-
         self.log_file = f"{self.node_id}_wal.log"
         self._load_from_disk()
 
+    def _create_snapshot(self):
+        with self.lock:
+            snapshot_data = dict(self.store)
+        self.snapshot_store.save_snapshot(self.node_id, snapshot_data)
+        
     def send_to_node(self, target_node: str, message: dict) -> Optional[dict]:
         pass  # provided
 
@@ -29,13 +35,15 @@ class KVStore:
             f.write(json.dumps(record) + "\n")
 
     def _load_from_disk(self):
-        if not os.path.exists(self.log_file):
-            return
-        with open(self.log_file, "r") as f:
-            for line in f:
-                rec = json.loads(line.strip())
-                self.store[rec["key"]] = rec["value"]
+        snap = self.snapshot_store.load_snapshot(self.node_id)
+        if snap:
+            self.store = snap
 
+        if os.path.exists(self.log_file):
+            with open(self.log_file, "r") as f:
+                for line in f:
+                    rec = json.loads(line.strip())
+                    self.store[rec["key"]] = rec["value"]
     def on_message(self, from_node: str, message: dict) -> dict:
         action = message.get("action")
 
