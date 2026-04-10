@@ -3,7 +3,7 @@ import os
 import threading
 import time
 from typing import Any, Optional, List, Dict
-from snapshot import ISnapshotStore, ISnapshotPolicy
+from Snapshot import ISnapshotStore, ISnapshotPolicy
 
 
 class KVStoreV2:

@@ -1,4 +1,4 @@
-from snapshot import InMemorySnapshotStore, CountSnapshotPolicy
+from Snapshot import InMemorySnapshotStore, CountSnapshotPolicy
 from KVStore import KVStore
 
 
