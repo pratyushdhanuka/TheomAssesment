@@ -4,7 +4,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>9e4d09ec-ddbf-4f1b-9642-97147fc32d4d</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>TheomeAssesment.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,7 +22,8 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="TheomeAssesment.py" />
+    <Compile Include="KVStore.py" />
+    <Compile Include="main.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Design\DesignBrainstorm.md" />
