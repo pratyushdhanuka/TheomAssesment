@@ -174,7 +174,19 @@ class KVStoreV2:
 
         if owner == self.node_id:
             with self.lock:
-                return self.store.get(key)
+                value = self.store.get(key)
+
+            if value is not None:
+                return value
+
+            if self.needs_replay == False:
+                buddy = self._buddy_for_owner(owner)
+                if buddy != self.node_id:
+                    resp = self.send_to_node(buddy, {"action": "forward_get", "key": key})
+                    if resp and resp.get("ok"):
+                        return resp.get("value")
+
+            return None
 
         resp = self.send_to_node(owner, {"action": "forward_get", "key": key})
         if resp and resp.get("ok"):
