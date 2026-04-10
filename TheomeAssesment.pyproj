@@ -22,6 +22,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="KVStoreV2.py" />
     <Compile Include="snapshot\count_snapshot_policy.py" />
     <Compile Include="snapshot\hybrid_snapshot_policy.py" />
     <Compile Include="snapshot\interval_snapshot_policy.py" />
