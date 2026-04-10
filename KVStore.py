@@ -1,7 +1,8 @@
 import json
 import os
 import threading
-from typing import Any, Optional, List
+from typing import Any, Optional, List, Dict
+from ISnapshotStore import ISnapshotStore
 
 
 class KVStore:

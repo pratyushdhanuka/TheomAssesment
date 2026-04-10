@@ -25,6 +25,10 @@
     <Compile Include="ISnapshotStore.py" />
     <Compile Include="KVStore.py" />
     <Compile Include="main.py" />
+    <Compile Include="snapshot\in_memory_snapshot_store.py" />
+    <Compile Include="snapshot\local_snapshot_store.py" />
+    <Compile Include="snapshot\s3_snapshot_store.py" />
+    <Compile Include="snapshot\__init__.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Design\BackupSnaphopt.md" />
