@@ -168,6 +168,7 @@ class KVStoreV2:
 
         return {"ok": False}
 
+    
     def get(self, key: str) -> Optional[Any]:
         owner = self._owner_for_key(key)
 
@@ -185,13 +186,6 @@ class KVStoreV2:
                 return self.store.get(key)
 
         resp = self.send_to_node(buddy, {"action": "forward_get", "key": key})
-        # if owner is online but marked as needing replay, prefer buddy's copy
-        owner_node = KVStoreV2._registry.get(owner)
-        if owner_node and getattr(owner_node, "needs_replay", False):
-            # ask buddy instead
-            resp = self.send_to_node(buddy, {"action": "forward_get", "key": key})
-            return resp.get("value") if resp and resp.get("ok") else None
-
         return resp.get("value") if resp and resp.get("ok") else None
 
     def put(self, key: str, value: Any) -> bool:
