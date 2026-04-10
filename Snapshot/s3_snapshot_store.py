@@ -1,7 +1,7 @@
 import json
 import os
 from typing import Dict, Any, Optional
-from ..ISnapshotStore import ISnapshotStore
+from .ISnapshotStore import ISnapshotStore
 
 
 class S3SnapshotStore(ISnapshotStore):

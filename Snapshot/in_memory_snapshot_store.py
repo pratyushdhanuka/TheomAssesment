@@ -1,5 +1,6 @@
 from typing import Dict, Any, Optional
-from ..ISnapshotStore import ISnapshotStore
+from typing import Dict, Any, Optional
+from .ISnapshotStore import ISnapshotStore
 
 
 class InMemorySnapshotStore(ISnapshotStore):

@@ -1,5 +1,5 @@
+from snapshot import InMemorySnapshotStore
 from KVStore import KVStore
-from snapshot.in_memory_snapshot_store import InMemorySnapshotStore
 
 
 def main():

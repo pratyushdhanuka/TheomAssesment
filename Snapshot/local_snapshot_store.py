@@ -2,7 +2,7 @@ import json
 import os
 import tempfile
 from typing import Dict, Any, Optional
-from ..ISnapshotStore import ISnapshotStore
+from .ISnapshotStore import ISnapshotStore
 
 
 class LocalSnapshotStore(ISnapshotStore):

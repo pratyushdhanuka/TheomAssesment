@@ -22,7 +22,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ISnapshotStore.py" />
+    <Compile Include="Snapshot\ISnapshotStore.py" />
     <Compile Include="KVStore.py" />
     <Compile Include="main.py" />
     <Compile Include="snapshot\in_memory_snapshot_store.py" />
