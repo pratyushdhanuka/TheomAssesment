@@ -37,6 +37,7 @@
     <Compile Include="snapshot\__init__.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assesment.md" />
     <Content Include="Design\BackupSnaphopt.md" />
     <Content Include="Design\DesignBrainstorm.md" />
     <Content Include="Design\Tradeoffs.md" />
